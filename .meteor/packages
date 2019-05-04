@@ -25,3 +25,4 @@ johanbrook:publication-collector  # Test a Meteor publication by collecting its 
 barbatus:typescript
 fourseven:scss
 seba:minifiers-autoprefixer
+littledata:synced-cron

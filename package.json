@@ -2,12 +2,14 @@
   "name": "hydra",
   "private": true,
   "scripts": {
-    "start": "meteor run",
+    "start": "meteor run --settings settings.json",
     "test": "meteor test --once --driver-package meteortesting:mocha"
   },
   "dependencies": {
     "@babel/runtime": "^7.3.4",
     "@types/meteor": "^1.4.28",
+    "axios": "^0.18.0",
+    "dotenv": "^8.0.0",
     "meteor-node-stubs": "^0.4.1"
   },
   "devDependencies": {
