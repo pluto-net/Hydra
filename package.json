@@ -9,6 +9,7 @@
     "@babel/runtime": "^7.3.4",
     "@types/meteor": "^1.4.28",
     "axios": "^0.18.0",
+    "bcrypt": "^3.0.6",
     "dotenv": "^8.0.0",
     "meteor-node-stubs": "^0.4.1"
   },
