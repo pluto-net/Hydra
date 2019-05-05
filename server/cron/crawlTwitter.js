@@ -1,6 +1,7 @@
 import Axios from "axios";
 import { Meteor } from "meteor/meteor";
 import { SyncedCron } from "meteor/littledata:synced-cron";
+import { TweetKeywords } from "/imports/api/tweetKeywords/tweetKeywords";
 
 const USER_ID_BLACK_LIST_TO_SHOW = [
   "902121528912781312" // colderbaek
@@ -85,16 +86,21 @@ SyncedCron.add({
   schedule: function(parser) {
     // parser is a later.parse object
     // http://bunkat.github.io/later/parsers.html#text
-    return parser.text("every 1 mins");
+    return parser.text("every 5 mins");
   },
-  job: async () => {
-    const tweets = await twitterWatcher.searchTweets("scinapse");
-    tweets.forEach(tweet => {
-      Meteor.call("tweets.upsert", tweet, err => {
-        if (err) {
-          console.error(err);
-        }
+  job: () => {
+    const keywordList = TweetKeywords.find().fetch();
+    if (keywordList && keywordList.length > 0) {
+      keywordList.forEach(async keyword => {
+        const tweets = await twitterWatcher.searchTweets(keyword.keyword);
+        tweets.forEach(tweet => {
+          Meteor.call("tweets.upsert", tweet, err => {
+            if (err) {
+              console.error(err);
+            }
+          });
+        });
       });
-    });
+    }
   }
 });

@@ -1,0 +1,17 @@
+<template name="tweetKeywordList">
+  <h2>Keywords to subscribe</h2>
+  <form class="keyword-add">
+    <input type="text" name="keyword" placeholder="Keyword" required />
+    <input type="submit" name="submit" value="Add" />
+  </form>
+  <ul class="list-group">
+    {{#each tweetKeywords}}
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      {{ keyword }}
+      <span class="badge badge-danger badge-pill del-btn">del</span>
+    </li>
+    {{/each}}
+  </ul>
+</template>
