@@ -1,11 +1,21 @@
 <template name="App_home">
-  <h1>
-    Welcome
-    <a
-      rel="nofollow"
-      target="_blank"
-      href="https://en.wikipedia.org/wiki/Hydra_(moon)"
-      >Hydra</a
-    >
-  </h1>
+  <div class="container">
+    <img
+      width="200"
+      height="200"
+      class="rounded mx-auto d-block"
+      src="/img/hydra.jpg"
+      alt="hydra"
+    />
+    <h1>
+      Welcome
+      <a
+        rel="nofollow"
+        target="_blank"
+        href="https://en.wikipedia.org/wiki/Hydra_(moon)"
+        >Hydra</a
+      >
+    </h1>
+    {{> tweetList }}
+  </div>
 </template>

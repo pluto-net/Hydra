@@ -54,38 +54,47 @@ class TwitterWatcher {
 
     const titleTweetResponse = result.data;
     const rawTweets = titleTweetResponse.statuses;
-    const tweets = rawTweets.map(t => this.makeTweetObject(t));
+    const tweets = rawTweets.map(t => this.makeTweetObject(t, query));
     return tweets.filter(
       t => !USER_ID_BLACK_LIST_TO_SHOW.includes(t.user.id_str)
     );
   }
 
-  makeTweetObject(rawTweet) {
-    const id = rawTweet.id_str;
+  makeTweetObject(rawTweet, query) {
+    const tId = rawTweet.id_str;
     const content = rawTweet.text;
-    const destURL = "https://twitter.com/statuses/" + id;
+    const destURL = "https://twitter.com/statuses/" + tId;
     const createdAt = rawTweet.created_at;
     const user = rawTweet.user;
 
     return {
-      id,
+      tId,
       content,
       destURL,
       createdAt,
-      user
+      user,
+      query
     };
   }
 }
 
 const twitterWatcher = new TwitterWatcher();
+
 SyncedCron.add({
-  name: "Crunch some important numbers for the marketing department",
+  name: "crawl relevant keywords from twitter",
   schedule: function(parser) {
     // parser is a later.parse object
     // http://bunkat.github.io/later/parsers.html#text
     return parser.text("every 1 mins");
   },
-  job: function() {
-    console.log("hello world");
+  job: async () => {
+    const tweets = await twitterWatcher.searchTweets("scinapse");
+    tweets.forEach(tweet => {
+      Meteor.call("tweets.upsert", tweet, err => {
+        if (err) {
+          console.error(err);
+        }
+      });
+    });
   }
 });

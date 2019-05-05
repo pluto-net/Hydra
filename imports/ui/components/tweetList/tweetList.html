@@ -1,0 +1,27 @@
+<template name="tweetList">
+  <h2>Tweet List</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">query</th>
+        <th scope="col">username</th>
+        <th scope="col">created at</th>
+        <th scope="col">content</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each tweets}}
+      <tr>
+        <th scope="row">{{@index}}</th>
+        <td>{{ query }}</td>
+        <td>{{ user.screen_name }}</td>
+        <td>{{ createdAt }}</td>
+        <td>
+          <a href="{{ destURL }}" target="_blank">{{ content }}</a>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>
