@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "start": "meteor run --settings settings.json",
+    "deploy": "DEPLOY_HOSTNAME=ap-southeast-2.galaxy.meteor.com meteor deploy styx.pluto.network --settings settings.json",
     "test": "meteor test --once --driver-package meteortesting:mocha"
   },
   "dependencies": {

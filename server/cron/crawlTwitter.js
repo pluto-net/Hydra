@@ -4,7 +4,8 @@ import { SyncedCron } from "meteor/littledata:synced-cron";
 import { TweetKeywords } from "/imports/api/tweetKeywords/tweetKeywords";
 
 const USER_ID_BLACK_LIST_TO_SHOW = [
-  "902121528912781312" // colderbaek
+  "902121528912781312", // colderbaek
+  "1107490011505557504" // yoonsimi
 ];
 
 class TwitterWatcher {
@@ -86,7 +87,7 @@ SyncedCron.add({
   schedule: function(parser) {
     // parser is a later.parse object
     // http://bunkat.github.io/later/parsers.html#text
-    return parser.text("every 5 mins");
+    return parser.text("every 3 mins");
   },
   job: () => {
     const keywordList = TweetKeywords.find().fetch();
