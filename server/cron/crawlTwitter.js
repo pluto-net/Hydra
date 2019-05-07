@@ -2,11 +2,7 @@ import Axios from "axios";
 import { Meteor } from "meteor/meteor";
 import { SyncedCron } from "meteor/littledata:synced-cron";
 import { TweetKeywords } from "/imports/api/tweetKeywords/tweetKeywords";
-
-const USER_ID_BLACK_LIST_TO_SHOW = [
-  "902121528912781312", // colderbaek
-  "1107490011505557504" // yoonsimi
-];
+import { USER_ID_BLACK_LIST_TO_SHOW } from "/imports/api/tweets/constants.js";
 
 class TwitterWatcher {
   constructor() {
@@ -66,7 +62,7 @@ class TwitterWatcher {
     const tId = rawTweet.id_str;
     const content = rawTweet.text;
     const destURL = "https://twitter.com/statuses/" + tId;
-    const createdAt = rawTweet.created_at;
+    const createdAt = new Date(rawTweet.created_at);
     const user = rawTweet.user;
 
     return {
@@ -87,7 +83,7 @@ SyncedCron.add({
   schedule: function(parser) {
     // parser is a later.parse object
     // http://bunkat.github.io/later/parsers.html#text
-    return parser.text("every 3 mins");
+    return parser.text("every 1 mins");
   },
   job: () => {
     const keywordList = TweetKeywords.find().fetch();
@@ -103,5 +99,17 @@ SyncedCron.add({
         });
       });
     }
+
+    Meteor.call("tweets.remove.blacklist", err => {
+      if (err) {
+        console.error(err);
+      }
+    });
+
+    Meteor.call("tweets.remove.oldTweets", err => {
+      if (err) {
+        console.error(err);
+      }
+    });
   }
 });
