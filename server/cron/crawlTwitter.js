@@ -2,7 +2,10 @@ import Axios from "axios";
 import { Meteor } from "meteor/meteor";
 import { SyncedCron } from "meteor/littledata:synced-cron";
 import { TweetKeywords } from "/imports/api/tweetKeywords/tweetKeywords";
-import { USER_ID_BLACK_LIST_TO_SHOW } from "/imports/api/tweets/constants.js";
+import {
+  USER_ID_BLACK_LIST_TO_SHOW,
+  TWITTER_BLACKLIST_USERNAME
+} from "/imports/api/tweets/constants.js";
 
 class TwitterWatcher {
   constructor() {
@@ -53,9 +56,14 @@ class TwitterWatcher {
     const titleTweetResponse = result.data;
     const rawTweets = titleTweetResponse.statuses;
     const tweets = rawTweets.map(t => this.makeTweetObject(t, query));
-    return tweets.filter(
-      t => !USER_ID_BLACK_LIST_TO_SHOW.includes(t.user.id_str)
-    );
+    return tweets
+      .filter(t => !USER_ID_BLACK_LIST_TO_SHOW.includes(t.user.id_str))
+      .filter(t => {
+        t =>
+          TWITTER_BLACKLIST_USERNAME.every(
+            username => !t.content.includes(`@${username}`)
+          );
+      });
   }
 
   makeTweetObject(rawTweet, query) {
