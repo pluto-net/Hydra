@@ -83,7 +83,7 @@ SyncedCron.add({
   schedule: function(parser) {
     // parser is a later.parse object
     // http://bunkat.github.io/later/parsers.html#text
-    return parser.text("every 1 mins");
+    return parser.text("every 5 mins");
   },
   job: () => {
     const keywordList = TweetKeywords.find().fetch();
