@@ -45,7 +45,9 @@ class TwitterWatcher {
           Authorization: `Bearer ${this.token}`
         },
         params: {
-          q: encodeURIComponent(query),
+          q: `${encodeURIComponent(
+            query
+          )} AND -filter:retweets AND -filter:replies`,
           result_type: "recent",
           count: 30,
           include_entities: true
@@ -56,14 +58,13 @@ class TwitterWatcher {
     const titleTweetResponse = result.data;
     const rawTweets = titleTweetResponse.statuses;
     const tweets = rawTweets.map(t => this.makeTweetObject(t, query));
-    return tweets
-      .filter(t => !USER_ID_BLACK_LIST_TO_SHOW.includes(t.user.id_str))
-      .filter(t => {
-        t =>
-          TWITTER_BLACKLIST_USERNAME.every(
-            username => !t.content.includes(`@${username}`)
-          );
-      });
+    return tweets.filter(
+      t =>
+        !USER_ID_BLACK_LIST_TO_SHOW.includes(t.user.id_str) &&
+        !TWITTER_BLACKLIST_USERNAME.some(username =>
+          t.content.includes(`@${username}`)
+        )
+    );
   }
 
   makeTweetObject(rawTweet, query) {
