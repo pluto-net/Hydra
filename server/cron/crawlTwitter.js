@@ -45,9 +45,7 @@ class TwitterWatcher {
           Authorization: `Bearer ${this.token}`
         },
         params: {
-          q: `${encodeURIComponent(
-            query
-          )} AND -filter:retweets AND -filter:replies`,
+          q: `${encodeURIComponent(query)} -filter:retweets -filter:replies`,
           result_type: "recent",
           count: 30,
           include_entities: true
