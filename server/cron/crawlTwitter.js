@@ -38,6 +38,7 @@ class TwitterWatcher {
       await this.getTwitterToken();
     }
 
+    const compositedQuery = `${query} -filter:retweets -filter:replies`;
     const result = await Axios.get(
       "https://api.twitter.com/1.1/search/tweets.json",
       {
@@ -45,7 +46,7 @@ class TwitterWatcher {
           Authorization: `Bearer ${this.token}`
         },
         params: {
-          q: `${encodeURIComponent(query)} -filter:retweets -filter:replies`,
+          q: compositedQuery,
           result_type: "recent",
           count: 30,
           include_entities: true
@@ -90,7 +91,7 @@ SyncedCron.add({
   schedule: function(parser) {
     // parser is a later.parse object
     // http://bunkat.github.io/later/parsers.html#text
-    return parser.text("every 5 mins");
+    return parser.text("every 1 mins");
   },
   job: () => {
     const keywordList = TweetKeywords.find().fetch();
